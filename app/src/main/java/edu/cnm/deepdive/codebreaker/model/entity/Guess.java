@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity(
     indices = {
         @Index(value = {"guess_key"}, unique = true),
-        @Index({"game_ud", "submitted"})
+        @Index({"game_id", "submitted"})
     },
     foreignKeys = {
         @ForeignKey(
@@ -31,7 +31,7 @@ public class Guess {
   @ColumnInfo(name = "game_id", index = true)
   private long gameId;
 
-  @ColumnInfo(name = "guess_key")
+  @ColumnInfo(name = "guess_key", typeAffinity = ColumnInfo.BLOB)
   private UUID guessKey;
 
   @NonNull
