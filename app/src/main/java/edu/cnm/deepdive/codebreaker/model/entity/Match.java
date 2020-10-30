@@ -81,6 +81,10 @@ public class Match {
     this.state = state;
   }
 
+
+  public enum State {
+    IN_PROGRESS, WON, LOST, FORFEITED;
+
   @TypeConverter
   public static Integer stateToInteger(State value) {
     return (value != null) ? value.ordinal() : null;
@@ -91,8 +95,6 @@ public class Match {
     return (value != null) ? State.values()[value] : null;
   }
 
-  public enum State {
-    IN_PROGRESS, WON, LOST, FORFEITED;
   }
 
 }
