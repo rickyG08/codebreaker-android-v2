@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import edu.cnm.deepdive.codebreaker.model.entity.User;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 @Dao

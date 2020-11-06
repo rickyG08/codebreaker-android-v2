@@ -46,8 +46,8 @@ public class UserRepository {
 
   public Single<User> getServerUserProfile() {
     return signInService.refresh()
+        .observeOn(Schedulers.io())
         .flatMap((account) -> webService.getProfile(getBearerToken(account.getIdToken()))
-            .subscribeOn(Schedulers.io())
             .flatMap((user) -> userDao.selectByOauthKey(account.getId())
                 .flatMap((localUser) -> {
                   localUser.setDisplayName(user.getDisplayName());
@@ -55,8 +55,7 @@ public class UserRepository {
                       .map((count) -> localUser);
                 })
             )
-        )
-        .subscribeOn(Schedulers.io());
+        );
   }
 
   private String getBearerToken(String idToken) {
