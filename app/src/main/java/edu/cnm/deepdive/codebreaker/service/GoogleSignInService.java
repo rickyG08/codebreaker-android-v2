@@ -9,6 +9,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import edu.cnm.deepdive.codebreaker.BuildConfig;
+import io.reactivex.Single;
 
 public class GoogleSignInService {
 
@@ -23,7 +25,7 @@ public class GoogleSignInService {
         .requestEmail()
         .requestId()
         .requestProfile()
-//        .requestIdToken(BuildConfig.CLIENT_ID)
+        .requestIdToken(BuildConfig.CLIENT_ID)
         .build();
     client = GoogleSignIn.getClient(context, options);
   }
@@ -40,9 +42,15 @@ public class GoogleSignInService {
     return account;
   }
 
-  public Task<GoogleSignInAccount> refresh() {
-    return client.silentSignIn()
-        .addOnSuccessListener((account) -> this.account = account);
+  public Single<GoogleSignInAccount> refresh() {
+    return Single.create((emitter) ->
+        client.silentSignIn()
+            .addOnSuccessListener((account) -> {
+              setAccount(account);
+              emitter.onSuccess(account);
+            })
+            .addOnFailureListener(emitter::onError)
+    );
   }
 
   public void startSignIn(Activity activity, int requestCode) {
@@ -55,7 +63,7 @@ public class GoogleSignInService {
     Task<GoogleSignInAccount> task = null;
     try {
       task = GoogleSignIn.getSignedInAccountFromIntent(data);
-      account = task.getResult(ApiException.class);
+      setAccount(task.getResult(ApiException.class));
     } catch (ApiException e) {
       // Exception will be passed automatically to onFailureListener.
     }
@@ -64,7 +72,15 @@ public class GoogleSignInService {
 
   public Task<Void> signOut() {
     return client.signOut()
-        .addOnCompleteListener((ignored) -> account = null);
+        .addOnCompleteListener((ignored) -> setAccount(null));
+  }
+
+  private void setAccount(GoogleSignInAccount account) {
+    this.account = account;
+//    if (account != null) {
+//      //noinspection ConstantConditions
+//      Log.d(getClass().getSimpleName(), account.getIdToken());
+//    }
   }
 
   private static class InstanceHolder {
