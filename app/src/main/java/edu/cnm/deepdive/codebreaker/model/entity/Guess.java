@@ -22,7 +22,7 @@ import java.util.UUID;
         )
     }
 )
-public class Guess {
+public class  Guess {
 
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "guess_id")
