@@ -3,23 +3,16 @@ package edu.cnm.deepdive.codebreaker.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration.Builder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import edu.cnm.deepdive.codebreaker.R;
 import edu.cnm.deepdive.codebreaker.databinding.ActivityNavigationBinding;
 import edu.cnm.deepdive.codebreaker.service.GoogleSignInService;
@@ -43,7 +36,8 @@ public class NavigationActivity extends AppCompatActivity {
 
   private void setupNavigation() {
     appBarConfig = new Builder(R.id.navigation_game, R.id.navigation_summary,
-        R.id.navigation_settings, R.id.navigation_match)
+        R.id.navigation_settings, R.id.navigation_current_matches,
+        R.id.navigation_available_matches, R.id.navigation_closed_matches)
         .setOpenableLayout(binding.drawerLayout)
         .build();
     //noinspection ConstantConditions
